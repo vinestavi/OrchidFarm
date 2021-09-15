@@ -130,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.show();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, DbContract.SERVER_LOGIN_URL,
                     response -> {
+//                Log.d(LoginActivity.class.getSimpleName(), "respon :"+response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String resp = jsonObject.getString("success");
@@ -140,7 +141,9 @@ public class LoginActivity extends AppCompatActivity {
                                 sharedPreferenceManager.saveBoolean(SharedPreferenceManager.SESSION, true);
 
                                 if (username.equals("smknegeri1bawen@gmail.com")) {
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class).addFlags((Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)));
+                                    Intent i = new Intent(LoginActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    i.putExtra("username", username);
+                                    startActivity(i);
                                     finish();
                                 }
 

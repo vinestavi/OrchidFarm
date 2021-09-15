@@ -1,9 +1,6 @@
 package com.vina.orchidfarm;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,21 +17,18 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.appbar.MaterialToolbar;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity implements ControlDialog.CreateDialogListener {
 
@@ -43,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements ControlDialog.Cre
     ProgressDialog progressDialog;
     Toolbar title;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements ControlDialog.Cre
         webview = (WebView)findViewById(R.id.WebView1);
         websettings = webview.getSettings();
         websettings.setJavaScriptEnabled(true);
+        webview.getSettings().setSaveFormData(false);
+        webview.loadUrl("javascript:window.location.reload( true )");
+        webview.getSettings().setAppCacheEnabled(true);
+        webview.getSettings().setDomStorageEnabled(true);
 
         webview.setWebViewClient(new SSLTolerentWebViewClient());
         webview.loadUrl("https://omahiot.net/api/index.php?sn=2021080001");
@@ -65,29 +64,21 @@ public class MainActivity extends AppCompatActivity implements ControlDialog.Cre
         if (checkNetworkConnection()) {
             progressDialog.show();
             StringRequest stringRequest = new StringRequest(Request.Method.POST, DbContract.SERVER_CONTROL_URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                String resp = jsonObject.getString("success");
-                                if (resp.equals("1")) {
-                                    Toast.makeText(getApplicationContext(), "Set Threshold Success", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                    response -> {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String resp = jsonObject.getString("success");
+                            if (resp.equals("1")) {
+                                Toast.makeText(getApplicationContext(), "Set Threshold Success", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), resp, Toast.LENGTH_SHORT).show();
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
+                    }, error -> Toast.makeText(getApplicationContext(), "Set Threshold Failed", Toast.LENGTH_SHORT).show()) {
                 @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Set Threshold Failed", Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
+                protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("meja1", meja1);
                     params.put("meja2", meja2);
@@ -97,12 +88,7 @@ public class MainActivity extends AppCompatActivity implements ControlDialog.Cre
 
             VolleySingleton.getInstance(MainActivity.this).addToRequestQue(stringRequest);
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    progressDialog.cancel();
-                }
-            }, 2000);
+            new Handler().postDelayed(() -> progressDialog.cancel(), 2000);
 
         }
     }

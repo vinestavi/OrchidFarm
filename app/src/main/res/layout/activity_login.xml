@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
     android:background="@color/white"
-    android:padding="25dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/tvPleaseLogin"
@@ -15,9 +15,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="100dp"
         android:text="Welcome back!\nSign in with your\nEmail here!"
+        android:textColor="@color/purple_200"
         android:textSize="32dp"
-        android:textStyle="bold"
-        android:textColor="@color/purple_200"/>
+        android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etLoginUsername"
@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:boxCornerRadiusBottomEnd="40dp"
+        app:hintTextColor="@color/black"
         app:boxCornerRadiusTopStart="40dp"
         app:boxCornerRadiusBottomStart="40dp"
         app:boxCornerRadiusTopEnd="40dp"
@@ -33,6 +34,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="10dp"
         app:boxStrokeColor="@color/black"
+        app:startIconTint="@color/purple_200"
         app:startIconDrawable="@drawable/ic_baseline_email_24"
         android:hint="@string/username"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -41,7 +43,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:hint="Username"
+            android:textColorHint="@color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -60,13 +64,18 @@
         app:passwordToggleEnabled="true"
         app:boxStrokeColor="@color/black"
         android:hint="Password"
+        app:hintTextColor="@color/black"
+        app:startIconTint="@color/purple_200"
+        app:passwordToggleTint="@color/purple_200"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:hint="Password"
+            android:textColorHint="@color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -89,9 +98,9 @@
         android:layout_below="@id/btnLogin"
         android:layout_marginStart="70dp"
         android:layout_marginEnd="70dp"
+        android:backgroundTint="@color/purple_200"
         android:text="SCAN YOUR SN HERE"
         android:textColor="@color/white"
-        android:backgroundTint="@color/purple_200"
         android:textSize="16sp"
         app:backgroundTint="@color/white"
         app:cornerRadius="30dp" />

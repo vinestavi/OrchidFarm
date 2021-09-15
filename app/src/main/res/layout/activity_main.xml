@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/purple_200">
@@ -24,7 +25,8 @@
 
     <WebView
         android:id="@+id/WebView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"></WebView>
+        android:layout_width="match_parent"
+        android:layout_below="@+id/appBarLayout"
+        android:layout_height="fill_parent"/>
 
 </RelativeLayout>
